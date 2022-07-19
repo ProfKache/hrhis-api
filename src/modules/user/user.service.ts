@@ -20,7 +20,6 @@ export class UserService {
   }
 
   getUserById(id: number): UserInterface {
-    console.log(typeof id);
     return this.users.find((user) => Number(user.id) === Number(id));
   }
 
