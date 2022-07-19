@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  api:
+    image: profkache/hris-demo
+    container_name: hrhis
+    build: .
+    restart: always
+    command: npm run start:dev
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:3009/api/status"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 9777:3009
