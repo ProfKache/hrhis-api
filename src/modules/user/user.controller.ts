@@ -30,7 +30,7 @@ export class UserController {
   // }
 
   @Get(':id')
-  getUser(@Param() params: { id: number }, @Res() res): UserInterface {
+  getUser(@Param() params: { id: string }, @Res() res): UserInterface {
     try {
       return res
         .status(HttpStatus.OK)
@@ -43,11 +43,13 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() payload: UserInterface, @Res() res): UserInterface {
+  async createUser(
+    @Body() payload: UserInterface,
+    @Res() res,
+  ): Promise<UserInterface> {
     try {
-      return res
-        .status(HttpStatus.CREATED)
-        .send(this.userService.createUser(payload));
+      const newUser = await this.userService.createUser(payload);
+      return res.status(HttpStatus.CREATED).send(newUser);
     } catch (e) {
       return res.status(HttpStatus.BAD_REQUEST).send({ error: e.message });
     }
@@ -69,7 +71,7 @@ export class UserController {
 
   @Put(':id')
   updateUser(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() payload: UserInterface,
     @Res() res,
   ): CreateUserResponse {
@@ -82,7 +84,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id: number, @Res() res): CreateUserResponse {
+  deleteUser(@Param('id') id: string, @Res() res): CreateUserResponse {
     try {
       return res.status(HttpStatus.OK).send(this.userService.deleteUser(id));
     } catch (e) {

@@ -17,3 +17,13 @@ services:
       - ./src:/app/src
     ports:
       - 9777:3009
+    depends_on:
+      - hr_db
+
+  hr_db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hrhis
